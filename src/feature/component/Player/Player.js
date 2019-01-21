@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import injectStyles from 'react-jss';
 import Loader from 'commons/components/Loader'
 import actions from 'store/actions';
-import './styles.scss';
 
 const styles = ({theme}) => ({
   main: {
@@ -25,10 +24,18 @@ const styles = ({theme}) => ({
   loading: {
     justifyContent: 'center',
   },
-  ...theme,
 })
 
 class Player extends React.Component {
+  componentWillMount () {
+    const browserWidth = window.innerWidth;
+    const browserHeight = window.innerHeight;
+
+    this.setState({
+      width: browserWidth,
+      height: browserHeight,
+    })
+  }
   isFinished = () => {
     const { markFinish } = this.props;
 
@@ -43,12 +50,11 @@ class Player extends React.Component {
 
   render() {
     const { movieLoaded, classes } = this.props;
+    const { width } = this.state;
     const mainStyles = movieLoaded ? `${classes.main}`
     : `${classes.main} ${classes.loading}`;
-
     const opts = {
-      height: '390',
-      width: '640',
+      width: width*.7 ,
       playerVars: {
         autoplay: 0,
         modestbranding: 1,
